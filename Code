@@ -1,4 +1,4 @@
-#Set of financial statements, including the balance sheet, cash flow statement, and income statement
+#Set of financial statements, including the balance sheet, cash flow statement, and income statement.
 
 CREATE TABLE BalanceSheet (
   ID INT PRIMARY KEY,
