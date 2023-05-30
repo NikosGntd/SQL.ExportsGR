@@ -1,0 +1,288 @@
+-- Customers table
+CREATE TABLE Customers (
+  customer_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  address VARCHAR(100),
+  contact_number VARCHAR(20)
+);
+
+--Accounts table
+CREATE TABLE Accounts (
+  account_id INT PRIMARY KEY,
+  customer_id INT,
+  account_type VARCHAR(50),
+  balance DECIMAL(10, 2),
+  status VARCHAR(20),
+  FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+--Transactions table
+CREATE TABLE Transactions (
+  transaction_id INT PRIMARY KEY,
+  account_id INT,
+  transaction_date DATE,
+  amount DECIMAL(10, 2),
+  FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Audit_Log table
+CREATE TABLE Audit_Log (
+  log_id INT PRIMARY KEY,
+  auditor_id INT,
+  audit_date DATE,
+  description VARCHAR(200),
+  FOREIGN KEY (auditor_id) REFERENCES Auditors(auditor_id)
+);
+
+-- Auditors table
+CREATE TABLE Auditors (
+  auditor_id INT PRIMARY KEY,
+  name VARCHAR(50),
+  department VARCHAR(50)
+);
+
+-- Branches table
+CREATE TABLE Branches (
+  branch_id INT PRIMARY KEY,
+  name VARCHAR(100),
+  address VARCHAR(100),
+  contact_number VARCHAR(20)
+);
+
+-- Employees table
+CREATE TABLE Employees (
+  employee_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  address VARCHAR(100),
+  contact_number VARCHAR(20),
+  branch_id INT,
+  FOREIGN KEY (branch_id) REFERENCES Branches(branch_id)
+);
+
+-- Loans table
+CREATE TABLE Loans (
+  loan_id INT PRIMARY KEY,
+  account_id INT,
+  loan_type VARCHAR(50),
+  amount DECIMAL(10, 2),
+  interest_rate DECIMAL(5, 2),
+  FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Credit_Cards table
+CREATE TABLE Credit_Cards (
+  card_id INT PRIMARY KEY,
+  customer_id INT,
+  card_type VARCHAR(50),
+  credit_limit DECIMAL(10, 2),
+  FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- Payments table
+CREATE TABLE Payments (
+  payment_id INT PRIMARY KEY,
+  card_id INT,
+  payment_date DATE,
+  amount DECIMAL(10, 2),
+  FOREIGN KEY (card_id) REFERENCES Credit_Cards(card_id)
+);
+
+
+
+
+
+
+
+
+
+
+-- Customers table
+INSERT INTO Customers (customer_id, first_name, last_name, address, contact_number)
+VALUES
+  (1, 'John', 'Doe', '123 Main St', '555-1234'),
+  (2, 'Jane', 'Smith', '456 Elm St', '555-5678'),
+  (3, 'Michael', 'Johnson', '789 Oak St', '555-9876'),
+  (4, 'Emily', 'Williams', '321 Pine St', '555-4321'),
+  (5, 'David', 'Brown', '987 Maple Ave', '555-8765');
+
+-- Accounts table
+INSERT INTO Accounts (account_id, customer_id, account_type, balance, status)
+VALUES
+  (1, 1, 'Savings', 1000.00, 'Active'),
+  (2, 2, 'Checking', 500.00, 'Active'),
+  (3, 3, 'Savings', 2500.00, 'Active'),
+  (4, 4, 'Checking', 750.00, 'Active'),
+  (5, 5, 'Savings', 1500.00, 'Active');
+
+-- Transactions table
+INSERT INTO Transactions (transaction_id, account_id, transaction_date, amount)
+VALUES
+  (1, 1, '2023-05-01', 50.00),
+  (2, 2, '2023-05-02', -100.00),
+  (3, 3, '2023-05-03', 200.00),
+  (4, 4, '2023-05-04', -50.00),
+  (5, 5, '2023-05-05', 100.00);
+
+-- Audit_Log table
+INSERT INTO Audit_Log (log_id, auditor_id, audit_date, description)
+VALUES
+  (1, 1, '2023-05-01', 'Performed account review.'),
+  (2, 1, '2023-05-02', 'Conducted risk assessment.'),
+  (3, 2, '2023-05-03', 'Investigated suspicious activity.'),
+  (4, 3, '2023-05-04', 'Reviewed compliance procedures.'),
+  (5, 2, '2023-05-05', 'Examined loan portfolio.');
+
+-- Auditors table
+INSERT INTO Auditors (auditor_id, name, department)
+VALUES
+  (1, 'John Doe', 'Risk Management'),
+  (2, 'Jane Smith', 'Internal Audit'),
+  (3, 'Michael Johnson', 'Compliance'),
+  (4, 'Emily Williams', 'Risk Management'),
+  (5, 'David Brown', 'Internal Audit');
+
+
+-- Branches table
+INSERT INTO Branches (branch_id, name, address, contact_number)
+VALUES
+  (1, 'Main Branch', '123 Main St', '555-1111'),
+  (2, 'North Branch', '456 Elm St', '555-2222'),
+  (3, 'South Branch', '789 Oak St', '555-3333'),
+  (4, 'East Branch', '321 Pine St', '555-4444'),
+  (5, 'West Branch', '987 Maple Ave', '555-5555');
+
+-- Employees table
+INSERT INTO Employees (employee_id, first_name, last_name, address, contact_number, branch_id)
+VALUES
+  (1, 'Sarah', 'Johnson', '456 Elm St', '555-6666', 1),
+  (2, 'Michael', 'Smith', '789 Oak St', '555-7777', 2),
+  (3, 'Emily', 'Davis', '321 Pine St', '555-8888', 3),
+  (4, 'Daniel', 'Wilson', '987 Maple Ave', '555-9999', 4),
+  (5, 'Olivia', 'Brown', '123 Main St', '555-0000', 5);
+
+-- Loans table
+INSERT INTO Loans (loan_id, account_id, loan_type, amount, interest_rate)
+VALUES
+  (1, 1, 'Personal Loan', 5000.00, 8.5),
+  (2, 2, 'Car Loan', 20000.00, 6.75),
+  (3, 3, 'Mortgage', 250000.00, 4.25),
+  (4, 4, 'Business Loan', 100000.00, 7.25),
+  (5, 5, 'Student Loan', 5000.00, 5.0);
+
+-- Credit_Cards table
+INSERT INTO Credit_Cards (card_id, customer_id, card_type, credit_limit)
+VALUES
+  (1, 1, 'Visa', 5000.00),
+  (2, 2, 'Mastercard', 3000.00),
+  (3, 3, 'American Express', 8000.00),
+  (4, 4, 'Discover', 2000.00),
+  (5, 5, 'Visa', 4000.00);
+
+-- Payments table
+INSERT INTO Payments (payment_id, card_id, payment_date, amount)
+VALUES
+  (1, 1, '2023-05-01', 100.00),
+  (2, 2, '2023-05-02', 50.00),
+  (3, 3, '2023-05-03', 200.00),
+  (4, 4, '2023-05-04', 75.00),
+  (5, 5, '2023-05-05', 150.00);
+
+
+
+-- Top 10 Customers with Account Balance Higher Than Average
+SELECT c.customer_id, c.first_name, c.last_name, a.account_type, a.balance
+FROM Customers c
+JOIN Accounts a ON c.customer_id = a.customer_id
+WHERE a.balance > (
+  SELECT AVG(balance)
+  FROM Accounts
+)
+ORDER BY a.balance DESC
+LIMIT 10;
+
+
+-- Customers with the Highest Total Transaction Amount
+SELECT c.customer_id, c.first_name, c.last_name, SUM(t.amount) AS total_transaction_amount
+FROM Customers c
+JOIN Accounts a ON c.customer_id = a.customer_id
+JOIN Transactions t ON a.account_id = t.account_id
+GROUP BY c.customer_id, c.first_name, c.last_name
+ORDER BY total_transaction_amount DESC
+LIMIT 1;
+
+-- Customer Status based on Account Balance
+SELECT customer_id, first_name, last_name,
+  CASE
+    WHEN balance > 1000 THEN 'High Balance'
+    WHEN balance > 500 THEN 'Medium Balance'
+    ELSE 'Low Balance'
+  END AS account_status
+FROM Accounts;
+
+-- Auditing - Left Join Transactions with Accounts
+SELECT t.transaction_id, t.account_id, t.transaction_date, t.amount, a.account_type
+FROM Transactions t
+LEFT JOIN Accounts a ON t.account_id = a.account_id;
+
+-- Auditing - Full Outer Join Transactions with Accounts to Search Transactions by Clients
+SELECT t.transaction_id, t.account_id, t.transaction_date, t.amount, a.account_type
+FROM Transactions t
+FULL OUTER JOIN Accounts a ON t.account_id = a.account_id;
+
+-- Transactions with Irregular Activity
+SELECT t.transaction_id, t.account_id, t.transaction_date, t.amount
+FROM Transactions t
+JOIN Accounts a ON t.account_id = a.account_id
+WHERE t.amount > 1000 -- High transaction amount threshold
+  OR t.amount > a.balance * 0.2 -- Transactions exceeding 20% of the account balance
+  OR t.transaction_date > (
+    SELECT MAX(transaction_date)
+    FROM Transactions t2
+    WHERE t2.account_id = t.account_id
+  ); -- Transactions with the latest transaction date for each account
+
+-- Transactions with Irregular Activity for Non-Verified Customers
+SELECT t.transaction_id, t.account_id, t.transaction_date, t.amount
+FROM Transactions t
+JOIN Accounts a ON t.account_id = a.account_id
+JOIN Customers c ON a.customer_id = c.customer_id
+WHERE c.verified = false -- Only consider non-verified customers
+  AND (
+    t.amount > 1000 -- High transaction amount threshold
+    OR t.amount > a.balance * 0.2 -- Transactions exceeding 20% of the account balance
+    OR t.transaction_date > (
+      SELECT MAX(transaction_date)
+      FROM Transactions t2
+      WHERE t2.account_id = t.account_id
+    ) -- Transactions with the latest transaction date for each account
+  );
+  
+  -- Transactions with Suspicious Repeated Activity
+SELECT t1.transaction_id, t1.account_id, t1.transaction_date, t1.amount
+FROM Transactions t1
+JOIN (
+  SELECT transaction_date, amount
+  FROM Transactions
+  GROUP BY transaction_date, amount
+  HAVING COUNT(*) > 1
+) t2 ON t1.transaction_date = t2.transaction_date AND t1.amount = t2.amount
+ORDER BY t1.transaction_date, t1.amount;
+
+-- Reverse Transactions by Same Customer
+SELECT t1.transaction_id, t1.account_id, t1.transaction_date, t1.amount, t1.recipient
+FROM Transactions t1
+JOIN Transactions t2 ON t1.account_id = t2.account_id
+WHERE t1.amount = t2.amount * -1
+  AND t1.recipient = t2.account_id
+  AND t1.transaction_id <> t2.transaction_id;
+
+  
+
+
+
+
+
+
+
