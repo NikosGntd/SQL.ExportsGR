@@ -1,0 +1,94 @@
+#Set of financial statements, including the balance sheet, cash flow statement, and income statement.
+
+CREATE TABLE BalanceSheet (
+  ID INT PRIMARY KEY,
+  CompanyID INT,
+  Year INT,
+  TotalAssets DECIMAL(15, 2),
+  TotalLiabilities DECIMAL(15, 2),
+  Equity DECIMAL(15, 2),
+  FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
+);
+
+CREATE TABLE CashFlowStatement (
+  ID INT PRIMARY KEY,
+  CompanyID INT,
+  Year INT,
+  NetCashFlow DECIMAL(15, 2),
+  FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
+);
+
+CREATE TABLE IncomeStatement (
+  ID INT PRIMARY KEY,
+  CompanyID INT,
+  Year INT,
+  Revenue DECIMAL(15, 2),
+  Expenses DECIMAL(15, 2),
+  NetIncome DECIMAL(15, 2),
+  FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
+);
+
+
+#Populate the tables with some data for ExportsGR:
+
+INSERT INTO BalanceSheet (ID, CompanyID, Year, TotalAssets, TotalLiabilities, Equity)
+VALUES
+  (1, 1, 2019, 2000000.00, 1000000.00, 1000000.00),
+  (2, 1, 2020, 2200000.00, 1100000.00, 1100000.00),
+  (3, 1, 2021, 2500000.00, 1200000.00, 1300000.00),
+  (4, 1, 2022, 2800000.00, 1300000.00, 1500000.00),
+  (5, 1, 2023, 3000000.00, 1400000.00, 1600000.00);
+
+
+INSERT INTO CashFlowStatement (ID, CompanyID, Year, NetCashFlow)
+VALUES
+  (1, 1, 2019, 500000.00),
+  (2, 1, 2020, 600000.00),
+  (3, 1, 2021, 700000.00),
+  (4, 1, 2022, 800000.00),
+  (5, 1, 2023, 900000.00);
+
+
+INSERT INTO IncomeStatement (ID, CompanyID, Year, Revenue, Expenses, NetIncome)
+VALUES
+  (1, 1, 2019, 1000000.00, 800000.00, 200000.00),
+  (2, 1, 2020, 1200000.00, 900000.00, 300000.00),
+  (3, 1, 2021, 1500000.00, 950000.00, 550000.00),
+  (4, 1, 2022, 1800000.00, 1000000.00, 800000.00),
+  (5, 1, 2023, 2000000.00, 1200000.00, 800000.00);
+
+--Current Ratio: The current ratio measures a company's ability to cover its short-term liabilities with its short-term assets.
+SELECT
+  bs.Year,
+  bs.TotalAssets / bs.TotalLiabilities AS CurrentRatio
+FROM BalanceSheet bs
+WHERE bs.CompanyID = 1;
+
+--Quick Ratio (Acid-Test Ratio): The quick ratio assesses a company's ability to meet short-term obligations without relying on inventory.
+SELECT
+  bs.Year,
+  (bs.TotalAssets - bs.Inventory) / bs.TotalLiabilities AS QuickRatio
+FROM BalanceSheet bs
+WHERE bs.CompanyID = 1;
+
+--Cash Ratio: The cash ratio evaluates a company's ability to pay off short-term liabilities with its cash and cash equivalents.
+SELECT
+  bs.Year,
+  bs.CashAndCashEquivalents / bs.TotalLiabilities AS CashRatio
+FROM BalanceSheet bs
+WHERE bs.CompanyID = 1;
+
+--Operating Cash Flow Ratio: The operating cash flow ratio measures a company's ability to generate cash flow from its operations relative to its revenue.
+SELECT
+  cfs.Year,
+  cfs.NetCashFlow / is.Revenue AS OperatingCashFlowRatio
+FROM CashFlowStatement cfs
+JOIN IncomeStatement is ON cfs.CompanyID = is.CompanyID AND cfs.Year = is.Year
+WHERE cfs.CompanyID = 1;
+
+
+
+
+
+
+
