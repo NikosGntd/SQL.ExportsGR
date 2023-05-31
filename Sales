@@ -1,0 +1,236 @@
+-- SalesEmployees table
+CREATE TABLE SalesEmployees (
+  EmployeeID INT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50),
+  Position VARCHAR(50),
+  Salary DECIMAL(10, 2)
+);
+
+-- Bonuses table
+CREATE TABLE Bonuses (
+  BonusID INT PRIMARY KEY,
+  EmployeeID INT,
+  BonusAmount DECIMAL(10, 2),
+  BonusDate DATE,
+  FOREIGN KEY (EmployeeID) REFERENCES SalesEmployees(EmployeeID)
+);
+
+-- SalesCustomers table
+CREATE TABLE SalesCustomers (
+  CustomerID INT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50),
+  Email VARCHAR(100),
+  Phone VARCHAR(20),
+  Address VARCHAR(100)
+);
+
+-- Regions table
+CREATE TABLE Regions (
+  RegionID INT PRIMARY KEY,
+  RegionName VARCHAR(50),
+  Country VARCHAR(50)
+);
+
+-- Orders table
+CREATE TABLE Orders (
+  OrderID INT PRIMARY KEY,
+  CustomerID INT,
+  OrderDate DATE,
+  TotalAmount DECIMAL(10, 2),
+  FOREIGN KEY (CustomerID) REFERENCES SalesCustomers(CustomerID)
+);
+
+-- OrderDetails table
+CREATE TABLE OrderDetails (
+  OrderDetailID INT PRIMARY KEY,
+  OrderID INT,
+  ProductID INT,
+  Quantity INT,
+  Price DECIMAL(10, 2),
+  FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+  FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+-- SalesValue table
+CREATE TABLE SalesValue (
+  SalesValueID INT PRIMARY KEY,
+  OrderID INT,
+  Amount DECIMAL(10, 2),
+  FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+-- Products table
+CREATE TABLE Products (
+  ProductID INT PRIMARY KEY,
+  ProductName VARCHAR(100),
+  Category VARCHAR(50),
+  Price DECIMAL(10, 2)
+);
+
+-- Insert data into SalesEmployees table
+INSERT INTO SalesEmployees (EmployeeID, FirstName, LastName, Position, Salary)
+VALUES
+  (1, 'John', 'Doe', 'Sales Manager', 5000.00),
+  (2, 'Jane', 'Smith', 'Sales Representative', 3000.00),
+  (3, 'Mike', 'Johnson', 'Sales Representative', 3000.00),
+  (4, 'Emily', 'Wilson', 'Sales Representative', 3500.00),
+  (5, 'Mark', 'Davis', 'Sales Manager', 4500.00);
+
+-- Insert data into Bonuses table
+INSERT INTO Bonuses (BonusID, EmployeeID, BonusAmount, BonusDate)
+VALUES
+  (1, 1, 1000.00, '2023-05-10'),
+  (2, 3, 500.00, '2023-05-15'),
+  (3, 2, 750.00, '2023-05-20'),
+  (4, 4, 400.00, '2023-05-12'),
+  (5, 5, 800.00, '2023-05-18');
+
+-- Insert data into SalesCustomers table
+INSERT INTO SalesCustomers (CustomerID, FirstName, LastName, Email, Phone, Address)
+VALUES
+  (1, 'David', 'Williams', 'david@example.com', '555-1234', '123 Main St'),
+  (2, 'Sarah', 'Taylor', 'sarah@example.com', '555-5678', '456 Elm St'),
+  (3, 'Robert', 'Davis', 'robert@example.com', '555-9012', '789 Oak St'),
+  (4, 'Jennifer', 'Brown', 'jennifer@example.com', '555-3456', '567 Pine St'),
+  (5, 'Michael', 'Clark', 'michael@example.com', '555-7890', '890 Maple St');
+
+-- Insert data into Regions table
+INSERT INTO Regions (RegionID, RegionName, Country)
+VALUES
+  (1, 'North', 'USA'),
+  (2, 'South', 'USA'),
+  (3, 'West', 'USA'),
+  (4, 'East', 'USA'),
+  (5, 'Central', 'USA');
+
+-- Insert data into Orders table
+INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount)
+VALUES
+  (1, 1, '2023-05-10', 1500.00),
+  (2, 2, '2023-05-12', 2000.00),
+  (3, 3, '2023-05-15', 1200.00),
+  (4, 4, '2023-05-18', 1800.00),
+  (5, 5, '2023-05-20', 2500.00);
+
+-- Insert data into OrderDetails table
+INSERT INTO OrderDetails (OrderDetailID, OrderID, ProductID, Quantity, Price)
+VALUES
+  (1, 1, 1, 2, 100.00),
+  (2, 1, 2, 3, 50.00),
+  (3, 2, 3, 1, 500.00),
+  (4, 3, 2, 2, 50.00),
+  (5, 4, 1, 4, 100.00);
+
+-- Insert data into SalesValue table
+INSERT INTO SalesValue (SalesValueID, OrderID, Amount)
+VALUES
+  (1, 1, 250.00),
+  (2, 2, 750.00),
+  (3, 3, 200.00),
+  (4, 4, 400.00),
+  (5, 5, 1000.00);
+
+-- Insert data into Products table
+INSERT INTO Products (ProductID, ProductName, Category, Price)
+VALUES
+  (1, 'Product A', 'Electronics', 100.00),
+  (2, 'Product B', 'Home Appliances', 50.00),
+  (3, 'Product C', 'Electronics', 500.00),
+  (4, 'Product D', 'Clothing', 25.00),
+  (5, 'Product E', 'Home Decor', 75.00);
+
+--Details of sales employees who have received a bonus:
+SELECT se.EmployeeID, se.FirstName, se.LastName, se.Position, se.Salary, b.BonusAmount, b.BonusDate
+FROM SalesEmployees se
+JOIN Bonuses b ON se.EmployeeID = b.EmployeeID;
+WHERE EXISTS (
+  SELECT 1
+  FROM Bonuses
+  WHERE EmployeeID = se.EmployeeID
+);
+
+--Customer information and total order amount for customers who have placed more than three orders
+SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Phone, c.Address, SUM(o.TotalAmount) AS TotalOrderAmount
+FROM SalesCustomers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.FirstName, c.LastName, c.Email, c.Phone, c.Address
+HAVING COUNT(o.OrderID) > 3;
+
+--Product details along with the total quantity sold, and classify the products as "High" or "Low" based on the quantity sold:
+SELECT p.ProductID, p.ProductName, p.Category, SUM(od.Quantity) AS TotalQuantitySold,
+  CASE
+    WHEN SUM(od.Quantity) > 100 THEN 'High'
+    ELSE 'Low'
+  END AS QuantityClassification
+FROM Products p
+JOIN OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY p.ProductID, p.ProductName, p.Category;
+
+--Order details along with the customer information and product details, including only the orders placed by customers who have an email address:
+SELECT o.OrderID, c.FirstName, c.LastName, p.ProductName, od.Quantity, od.Price
+FROM Orders o
+JOIN SalesCustomers c ON o.CustomerID = c.CustomerID
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+WHERE c.Email IS NOT NULL;
+
+--Unified list of customer names and employee names:
+SELECT FirstName, LastName, 'Customer' AS Type
+FROM SalesCustomers
+UNION
+SELECT FirstName, LastName, 'Employee' AS Type
+FROM SalesEmployees;
+
+-- Customer information
+SELECT
+  CustomerID,
+  FirstName,
+  LastName,
+  'Customer ID is ' || CustomerID AS "Column 1: Customer ID",
+  'Full Name is ' || FirstName || ' ' || LastName AS "Column 2: Full Name",
+  CONCAT('Customer ID:', CustomerID, ', Full Name:', FirstName, ' ', LastName) AS "Column 3: Concatenated Data"
+FROM SalesCustomers
+LIMIT 3;
+
+-- Combine columns: Customer ID and Full Name
+WITH combined_data AS (
+   SELECT
+    CustomerID || ' - ' || FirstName || ' ' || LastName AS customer_info
+  FROM SalesCustomers
+)
+SELECT
+  customer_info
+FROM combined_data
+LIMIT 5;
+
+-- Common products between Sales2019 and Sales2020
+SELECT ProductID, ProductName
+FROM Sales
+WHERE SalesYear = 2019
+INTERSECT
+SELECT ProductID, ProductName
+FROM Sales
+WHERE SalesYear = 2020;
+
+-- Products sold in 2019 but not in 2020
+SELECT ProductID, ProductName
+FROM Sales
+WHERE SalesYear = 2019
+EXCEPT
+SELECT ProductID, ProductName
+FROM Sales
+WHERE SalesYear = 2020;
+
+
+
+
+
+
+
+
+
+
+
+
