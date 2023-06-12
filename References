@@ -1,0 +1,412 @@
+-- ADD: Adds a column in an existing table
+ALTER TABLE myTable
+ADD newColumn INT;
+
+-- ADD CONSTRAINT: Adds a constraint after a table is already created
+ALTER TABLE myTable
+ADD CONSTRAINT constraintName CHECK (column > 0);
+
+-- ALL: Returns true if all of the subquery values meet the condition
+SELECT *
+FROM myTable
+WHERE column > ALL (SELECT subColumn FROM subTable);
+
+-- ALTER: Adds, deletes, or modifies columns in a table, or changes the data type of a column in a table
+ALTER TABLE myTable
+ALTER COLUMN columnType INT;
+
+-- ALTER COLUMN: Changes the data type of a column in a table
+ALTER TABLE myTable
+ALTER COLUMN columnType VARCHAR(50);
+
+-- ALTER TABLE: Adds, deletes, or modifies columns in a table
+ALTER TABLE myTable
+ADD newColumn INT;
+
+-- AND: Only includes rows where both conditions are true
+SELECT *
+FROM myTable
+WHERE condition1 AND condition2;
+
+-- ANY: Returns true if any of the subquery values meet the condition
+SELECT *
+FROM myTable
+WHERE column = ANY (SELECT subColumn FROM subTable);
+
+-- AS: Renames a column or table with an alias
+SELECT columnName AS aliasName
+FROM myTable;
+
+-- ASC: Sorts the result set in ascending order
+SELECT *
+FROM myTable
+ORDER BY columnName ASC;
+
+-- BACKUP DATABASE: Creates a backup of an existing database
+BACKUP DATABASE myDatabase
+TO disk = 'C:\backup\myDatabase.bak';
+
+-- BETWEEN: Selects values within a given range
+SELECT *
+FROM myTable
+WHERE column BETWEEN 1 AND 10;
+
+-- CASE: Creates different outputs based on conditions
+SELECT column,
+       CASE
+           WHEN column > 10 THEN 'Greater than 10'
+           WHEN column < 10 THEN 'Less than 10'
+           ELSE 'Equal to 10'
+       END AS result
+FROM myTable;
+
+-- CHECK: A constraint that limits the value that can be placed in a column
+CREATE TABLE myTable (
+    column INT CHECK (column > 0)
+);
+-- COLUMN: Changes the data type of a column or deletes a column in a table
+ALTER TABLE myTable
+ALTER COLUMN columnName INT;
+
+ALTER TABLE myTable
+DROP COLUMN columnName;
+
+-- CONSTRAINT: Adds or deletes a constraint
+ALTER TABLE myTable
+ADD CONSTRAINT constraintName CHECK (column > 0);
+
+ALTER TABLE myTable
+DROP CONSTRAINT constraintName;
+
+-- CREATE: Creates a database, index, view, table, or procedure
+CREATE DATABASE myDatabase;
+
+CREATE INDEX indexName
+ON myTable (columnName);
+
+CREATE OR REPLACE VIEW myView AS
+SELECT column1, column2
+FROM myTable
+WHERE condition;
+
+CREATE TABLE myTable (
+    column1 INT,
+    column2 VARCHAR(50)
+);
+
+CREATE PROCEDURE myProcedure
+AS
+BEGIN
+    -- Procedure logic here
+END;
+
+-- CREATE UNIQUE INDEX: Creates a unique index on a table (no duplicate values)
+CREATE UNIQUE INDEX indexName
+ON myTable (columnName);
+
+-- CREATE VIEW: Creates a view based on the result set of a SELECT statement
+CREATE VIEW myView AS
+SELECT column1, column2
+FROM myTable
+WHERE condition;
+
+-- DATABASE: Creates or deletes an SQL database
+CREATE DATABASE myDatabase;
+
+DROP DATABASE myDatabase;
+
+-- DEFAULT: A constraint that provides a default value for a column
+CREATE TABLE myTable (
+    column1 INT DEFAULT 0,
+    column2 VARCHAR(50) DEFAULT 'Default value'
+);
+
+-- DELETE: Deletes rows from a table
+DELETE FROM myTable
+WHERE condition;
+
+-- DESC: Sorts the result set in descending order
+SELECT *
+FROM myTable
+ORDER BY columnName DESC;
+
+-- DISTINCT: Selects only distinct (different) values
+SELECT DISTINCT columnName
+FROM myTable;
+
+-- DROP: Deletes a column, constraint, database, index, table, or view
+ALTER TABLE myTable
+DROP columnName;
+
+ALTER TABLE myTable
+DROP CONSTRAINT constraintName;
+
+DROP DATABASE myDatabase;
+
+DROP INDEX indexName;
+
+DROP TABLE myTable;
+
+DROP VIEW myView;
+
+-- DROP COLUMN: Deletes a column in a table
+ALTER TABLE myTable
+DROP COLUMN columnName;
+
+-- DROP CONSTRAINT: Deletes a UNIQUE, PRIMARY KEY, FOREIGN KEY, or CHECK constraint
+ALTER TABLE myTable
+DROP CONSTRAINT constraintName;
+
+-- DROP DATABASE: Deletes an existing SQL database
+DROP DATABASE myDatabase;
+
+-- DROP DEFAULT: Deletes a DEFAULT constraint
+ALTER TABLE myTable
+ALTER COLUMN columnName DROP DEFAULT;
+
+-- DROP INDEX: Deletes an index in a table
+DROP INDEX indexName ON myTable;
+
+-- DROP TABLE: Deletes an existing table in the database
+DROP TABLE myTable;
+
+-- DROP VIEW: Deletes a view
+DROP VIEW myView;
+
+-- EXEC: Executes a stored procedure
+EXEC myProcedure;
+
+-- EXISTS: Tests for the existence of any record in a subquery
+SELECT *
+FROM myTable
+WHERE EXISTS (SELECT * FROM subTable WHERE condition);
+
+-- FOREIGN KEY: A constraint that is a key used to link two tables together
+CREATE TABLE table1 (
+    column1 INT PRIMARY KEY
+);
+
+CREATE TABLE table2 (
+    column2 INT,
+    FOREIGN KEY (column2) REFERENCES table1(column1)
+);
+
+-- FROM: Specifies which table to select or delete data from
+SELECT *
+FROM myTable
+JOIN otherTable ON myTable.column = otherTable.column;
+
+DELETE FROM myTable
+FROM myTable
+JOIN otherTable ON myTable.column = otherTable.column;
+
+-- FULL OUTER JOIN: Returns all rows when there is a match in either the left table or right table
+SELECT *
+FROM table1
+FULL OUTER JOIN table2 ON table1.column = table2.column;
+
+-- GROUP BY: Groups the result set (used with aggregate functions: COUNT, MAX, MIN, SUM, AVG)
+SELECT column1, COUNT(column2)
+FROM myTable
+GROUP BY column1;
+
+-- HAVING: Used instead of WHERE with aggregate functions
+SELECT column1, COUNT(column2)
+FROM myTable
+GROUP BY column1
+HAVING COUNT(column2) > 10;
+
+-- IN: Allows you to specify multiple values in a WHERE clause
+SELECT *
+FROM myTable
+WHERE column IN (value1, value2, value3);
+
+-- INDEX: Creates or deletes an index in a table
+CREATE INDEX indexName
+ON myTable (columnName);
+
+DROP INDEX indexName;
+
+-- INNER JOIN: Returns rows that have matching values in both tables
+SELECT *
+FROM table1
+INNER JOIN table2 ON table1.column = table2.column;
+
+-- INSERT INTO: Inserts new rows in a table
+INSERT INTO myTable (column1, column2)
+VALUES (value1, value2);
+
+-- INSERT INTO SELECT: Copies data from one table into another table
+INSERT INTO newTable (column1, column2)
+SELECT column1, column2
+FROM myTable
+WHERE condition;
+
+-- IS NULL: Tests for empty values
+SELECT *
+FROM myTable
+WHERE column IS NULL;
+
+-- IS NOT NULL: Tests for non-empty values
+SELECT *
+FROM myTable
+WHERE column IS NOT NULL;
+
+-- JOIN: Joins tables
+SELECT *
+FROM table1
+JOIN table2 ON table1.column = table2.column;
+
+-- LEFT JOIN: Returns all rows from the left table, and the matching rows from the right table
+SELECT *
+FROM table1
+LEFT JOIN table2 ON table1.column = table2.column;
+
+-- LIKE: Searches for a specified pattern in a column
+SELECT *
+FROM myTable
+WHERE column LIKE '%pattern%';
+
+-- LIMIT: Specifies the number of records to return in the result set
+SELECT *
+FROM myTable
+LIMIT 10;
+
+-- NOT: Only includes rows where a condition is not true
+SELECT *
+FROM myTable
+WHERE NOT condition;
+
+-- NOT NULL: A constraint that enforces a column to not accept NULL values
+CREATE TABLE myTable (
+    column1 INT NOT NULL,
+    column2 VARCHAR(50) NOT NULL
+);
+
+-- OR: Includes rows where either condition is true
+SELECT *
+FROM myTable
+WHERE condition1 OR condition2;
+
+-- ORDER BY: Sorts the result set in ascending or descending order
+SELECT *
+FROM myTable
+ORDER BY columnName ASC;
+
+SELECT *
+FROM myTable
+ORDER BY columnName DESC;
+
+-- OUTER JOIN: Returns all rows when there is a match in either the left table or right table
+SELECT *
+FROM table1
+FULL OUTER JOIN table2 ON table1.column = table2.column;
+
+-- PRIMARY KEY: A constraint that uniquely identifies each record in a database table
+CREATE TABLE myTable (
+    id INT PRIMARY KEY,
+    columnName VARCHAR(50)
+);
+
+-- PROCEDURE: A stored procedure
+CREATE PROCEDURE myProcedure
+AS
+BEGIN
+    -- Procedure logic here
+END;
+
+-- RIGHT JOIN: Returns all rows from the right table, and the matching rows from the left table
+SELECT *
+FROM table1
+RIGHT JOIN table2 ON table1.column = table2.column;
+
+-- ROWNUM: Specifies the number of records to return in the result set
+SELECT *
+FROM myTable
+WHERE ROWNUM <= 10;
+
+-- SELECT: Selects data from a database
+SELECT columnName1, columnName2
+FROM myTable;
+
+-- SELECT DISTINCT: Selects only distinct (different) values
+SELECT DISTINCT columnName
+FROM myTable;
+
+-- SELECT INTO: Copies data from one table into a new table
+SELECT columnName1, columnName2
+INTO newTable
+FROM myTable
+WHERE condition;
+
+-- SELECT TOP: Specifies the number of records to return in the result set
+SELECT TOP 10 *
+FROM myTable;
+
+-- SET: Specifies which columns and values should be updated in a table
+UPDATE myTable
+SET columnName = value
+WHERE condition;
+
+-- TABLE: Creates a table, or adds, deletes, or modifies columns in a table, or deletes a table or data inside a table
+CREATE TABLE myTable (
+    column1 INT,
+    column2 VARCHAR(50)
+);
+
+ALTER TABLE myTable
+ADD newColumn INT;
+
+ALTER TABLE myTable
+DROP COLUMN columnName;
+
+DROP TABLE myTable;
+
+DELETE FROM myTable;
+
+-- TOP: Specifies the number of records to return in the result set
+SELECT TOP 10 *
+FROM myTable;
+
+-- TRUNCATE TABLE: Deletes the data inside a table, but not the table itself
+TRUNCATE TABLE myTable;
+
+-- UNION: Combines the result set of two or more SELECT statements (only distinct values)
+SELECT column1
+FROM table1
+UNION
+SELECT column1
+FROM table2;
+
+-- UNION ALL: Combines the result set of two or more SELECT statements (allows duplicate values)
+SELECT column1
+FROM table1
+UNION ALL
+SELECT column1
+FROM table2;
+
+-- UNIQUE: A constraint that ensures that all values in a column are unique
+CREATE TABLE myTable (
+    id INT UNIQUE,
+    columnName VARCHAR(50)
+);
+
+-- UPDATE: Updates existing rows in a table
+UPDATE myTable
+SET columnName = 'New Value'
+WHERE condition;
+
+-- VALUES: Specifies the values of an INSERT INTO statement
+INSERT INTO myTable (column1, column2)
+VALUES (value1, value2);
+
+-- VIEW: Creates, updates, or deletes a view
+CREATE VIEW myView AS
+SELECT column1, column2
+FROM myTable
+WHERE condition;
+
+-- WHERE: Filters a result set to include only records that fulfill a specified condition
+SELECT *
+FROM myTable
+WHERE condition;
