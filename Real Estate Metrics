@@ -1,0 +1,205 @@
+--Properties Table:
+CREATE TABLE Properties (
+    property_id INT PRIMARY KEY,
+    property_name VARCHAR(255),
+    location VARCHAR(255),
+    condition VARCHAR(255),
+    market_value DECIMAL(10, 2),
+    sale_price DECIMAL(10, 2)
+);
+--Cashflows Table:
+CREATE TABLE Cashflows (
+    property_id INT,
+    year INT,
+    rental_income DECIMAL(10, 2),
+    operating_expenses DECIMAL(10, 2),
+    net_operating_income DECIMAL(10, 2),
+    cash_flow DECIMAL(10, 2),
+    PRIMARY KEY (property_id, year),
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
+);
+--Tenants Table:
+CREATE TABLE Tenants (
+    tenant_id INT PRIMARY KEY,
+    property_id INT,
+    tenant_name VARCHAR(255),
+    lease_start_date DATE,
+    lease_end_date DATE,
+    monthly_rent DECIMAL(10, 2),
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
+);
+--Vacancies Table:
+CREATE TABLE Vacancies (
+    property_id INT,
+    vacancy_date DATE,
+    PRIMARY KEY (property_id, vacancy_date),
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
+);
+--Calendar Table:
+CREATE TABLE Calendar (
+    date DATE PRIMARY KEY,
+    day_of_week VARCHAR(20),
+    month VARCHAR(20),
+    year INT
+);
+--Taxes Table:
+CREATE TABLE Taxes (
+    property_id INT,
+    year INT,
+    tax_amount DECIMAL(10, 2),
+    PRIMARY KEY (property_id, year),
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
+);
+--Acquisition Cost Table:
+CREATE TABLE AcquisitionCost (
+    property_id INT PRIMARY KEY,
+    purchase_price DECIMAL(10, 2),
+    closing_costs DECIMAL(10, 2),
+    renovation_costs DECIMAL(10, 2),
+    other_costs DECIMAL(10, 2),
+    FOREIGN KEY (property_id) REFERENCES Properties(property_id)
+);
+
+--Properties Table:
+INSERT INTO Properties (property_id, property_name, location, condition, market_value, sale_price)
+VALUES
+    (1, 'Property A', 'New York', 'Excellent', 500000, 450000),
+    (2, 'Property B', 'Los Angeles', 'Good', 400000, 380000),
+    (3, 'Property C', 'Chicago', 'Fair', 300000, 290000),
+    (4, 'Property D', 'Houston', 'Average', 250000, 220000),
+    (5, 'Property E', 'San Francisco', 'Excellent', 800000, 750000);
+--Cashflows Table:
+INSERT INTO Cashflows (property_id, year, rental_income, operating_expenses, net_operating_income, cash_flow)
+VALUES
+    (1, 2021, 50000, 20000, 30000, 25000),
+    (1, 2022, 55000, 22000, 33000, 27000),
+    (2, 2021, 40000, 18000, 22000, 18000),
+    (2, 2022, 42000, 19000, 23000, 19000),
+    (3, 2021, 30000, 15000, 15000, 12000);
+--Tenants Table:
+INSERT INTO Tenants (tenant_id, property_id, tenant_name, lease_start_date, lease_end_date, monthly_rent)
+VALUES
+    (1, 1, 'Tenant A', '2021-01-01', '2023-01-01', 4000),
+    (2, 1, 'Tenant B', '2022-03-01', '2023-03-01', 3500),
+    (3, 2, 'Tenant C', '2021-06-01', '2022-06-01', 3000),
+    (4, 3, 'Tenant D', '2021-01-01', '2024-01-01', 2500),
+    (5, 4, 'Tenant E', '2021-08-01', '2022-08-01', 2000);
+--Vacancies Table:
+INSERT INTO Vacancies (property_id, vacancy_date)
+VALUES
+    (1, '2023-02-01'),
+    (1, '2023-04-01'),
+    (2, '2022-07-01'),
+    (3, '2023-01-01'),
+    (5, '2022-12-01');
+--Taxes Table:
+INSERT INTO Taxes (property_id, year, tax_amount)
+VALUES
+    (1, 2021, 5000),
+    (1, 2022, 5500),
+    (2, 2021, 4000),
+    (2, 2022, 4200),
+    (3, 2021, 3000);
+--Acquisition Cost Table:
+INSERT INTO AcquisitionCost (property_id, purchase_price, closing_costs, renovation_costs, other_costs)
+VALUES
+    (1, 400000, 10000, 20000, 5000),
+    (2, 300000, 8000, 15000, 4000),
+    (3, 200000, 5000, 10000, 3000),
+    (4, 150000, 4000, 8000, 2000),
+    (5, 600000, 15000, 30000, 7000);
+    
+-- Market Value:
+SELECT property_id, market_value
+FROM Properties;
+--Gross Rent Multiplier (GRM):
+SELECT property_id, sale_price / gross_annual_rental_income AS gross_rent_multiplier
+FROM Properties
+    JOIN Cashflows ON Properties.property_id = Cashflows.property_id;
+--Capitalization Rate (Cap Rate):
+SELECT property_id, net_operating_income / purchase_price AS cap_rate
+FROM Properties
+    JOIN Cashflows ON Properties.property_id = Cashflows.property_id
+    JOIN AcquisitionCost ON Properties.property_id = AcquisitionCost.property_id;
+--Cash-on-Cash Return (CoC):
+SELECT property_id, annual_cash_flow / initial_cash_investment AS cash_on_cash_return
+FROM Properties
+    JOIN Cashflows ON Properties.property_id = Cashflows.property_id
+    JOIN AcquisitionCost ON Properties.property_id = AcquisitionCost.property_id;
+--Internal Rate of Return (IRR):
+SELECT property_id, internal_rate_of_return AS irr
+FROM Properties;
+--Return on Investment (ROI):
+SELECT property_id, (net_profit / initial_investment_cost) * 100 AS return_on_investment
+FROM Properties;
+--Debt Service Coverage Ratio (DSCR):
+SELECT property_id, net_operating_income / annual_debt_service AS debt_service_coverage_ratio
+FROM Properties
+    JOIN Cashflows ON Properties.property_id = Cashflows.property_id;
+--Vacancy Rate:
+SELECT property_id, vacancy_rate
+FROM Properties
+    JOIN Vacancies ON Properties.property_id = Vacancies.property_id;
+--Price-to-Earnings (P/E) Ratio:
+SELECT property_id, sale_price / net_operating_income AS price_to_earnings_ratio
+FROM Properties
+    JOIN Cashflows ON Properties.property_id = Cashflows.property_id;
+    
+    -- Location Table:
+CREATE TABLE Location (
+    location_id INT PRIMARY KEY,
+    city VARCHAR(255),
+    state VARCHAR(255),
+    country VARCHAR(255)
+);
+
+-- Inserting sample data:
+INSERT INTO Location (location_id, city, state, country)
+VALUES
+    (1, 'New York', 'New York', 'United States'),
+    (2, 'Los Angeles', 'California', 'United States'),
+    (3, 'Chicago', 'Illinois', 'United States'),
+    (4, 'Houston', 'Texas', 'United States'),
+    (5, 'San Francisco', 'California', 'United States');
+
+SELECT
+    property_id,
+    property_name,
+    CASE
+        WHEN location = 'New York' THEN 'East Coast'
+        WHEN location = 'Los Angeles' THEN 'West Coast'
+        ELSE 'Other'
+    END AS region
+FROM
+    Properties;
+SELECT
+    property_id,
+    property_name
+FROM
+    Properties
+WHERE
+    EXISTS (
+        SELECT *
+        FROM Tenants
+        WHERE Tenants.property_id = Properties.property_id
+    );
+SELECT
+    property_id,
+    COUNT(*) AS num_vacancies
+FROM
+    Vacancies
+GROUP BY
+    property_id
+HAVING
+    COUNT(*) > 1;
+SELECT TOP 3
+    property_id,
+    property_name,
+    market_value
+FROM
+    Properties
+ORDER BY
+    market_value DESC;
+
+
+    
