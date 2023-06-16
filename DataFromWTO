@@ -1,0 +1,35 @@
+/*In this exercise, we will search for intellectual property laws in Latin America issued between 1990 and 1999, 
+excluding 1991-1993. We'll analyze the negotiation status, involvement of observers, and complaints related to these laws */
+
+WITH LatinAmericanLaws AS (
+  SELECT Laws.*
+  FROM Laws
+  JOIN Countries ON Laws.CountryId = Countries.Id
+  WHERE Countries.Region = 'Latin America'
+    AND Laws.Year BETWEEN 1990 AND 1999
+    AND NOT (Laws.Year BETWEEN 1991 AND 1993)
+),
+NegotiationStatus AS (
+  SELECT LawId, 
+    CASE
+      WHEN Result = 'done' THEN 'Successful'
+      WHEN Result = 'failed' THEN 'Failed'
+      ELSE 'Pending'
+    END AS Status
+  FROM LatinAmericanLaws
+),
+LawSummary AS (
+  SELECT LawId, COUNT(*) AS NumComplaints
+  FROM Complaints
+  GROUP BY LawId
+)
+SELECT Laws.DocumentSymbol, Laws.DateOfDocumentDistribution, Laws.TitleOfLawOrRegulation, Countries.Member,
+  Laws.DownloadDocument, NS.Status AS NegotiationStatus, COALESCE(LS.NumComplaints, 0) AS NumComplaints
+FROM LatinAmericanLaws AS Laws
+JOIN NegotiationStatus AS NS ON Laws.Id = NS.LawId
+JOIN Countries ON Laws.CountryId = Countries.Id
+LEFT JOIN LawSummary AS LS ON Laws.Id = LS.LawId
+WHERE EXISTS (SELECT 1 FROM Observers WHERE Observers.LawId = Laws.Id)
+  AND Laws.TitleOfLawOrRegulation NOT LIKE '%test%'
+HAVING NumComplaints > 0
+ORDER BY Laws.DateOfDocumentDistribution DESC, Laws.TitleOfLawOrRegulation;
