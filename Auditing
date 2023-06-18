@@ -1,4 +1,4 @@
--- Customers table
+--Creating Tables
 CREATE TABLE Customers (
   customer_id INT PRIMARY KEY,
   first_name VARCHAR(50),
@@ -7,7 +7,6 @@ CREATE TABLE Customers (
   contact_number VARCHAR(20)
 );
 
---Accounts table
 CREATE TABLE Accounts (
   account_id INT PRIMARY KEY,
   customer_id INT,
@@ -17,7 +16,7 @@ CREATE TABLE Accounts (
   FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
 
---Transactions table
+
 CREATE TABLE Transactions (
   transaction_id INT PRIMARY KEY,
   account_id INT,
@@ -26,7 +25,7 @@ CREATE TABLE Transactions (
   FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
--- Audit_Log table
+
 CREATE TABLE Audit_Log (
   log_id INT PRIMARY KEY,
   auditor_id INT,
@@ -35,14 +34,14 @@ CREATE TABLE Audit_Log (
   FOREIGN KEY (auditor_id) REFERENCES Auditors(auditor_id)
 );
 
--- Auditors table
+
 CREATE TABLE Auditors (
   auditor_id INT PRIMARY KEY,
   name VARCHAR(50),
   department VARCHAR(50)
 );
 
--- Branches table
+
 CREATE TABLE Branches (
   branch_id INT PRIMARY KEY,
   name VARCHAR(100),
@@ -50,7 +49,7 @@ CREATE TABLE Branches (
   contact_number VARCHAR(20)
 );
 
--- Employees table
+
 CREATE TABLE Employees (
   employee_id INT PRIMARY KEY,
   first_name VARCHAR(50),
@@ -61,7 +60,7 @@ CREATE TABLE Employees (
   FOREIGN KEY (branch_id) REFERENCES Branches(branch_id)
 );
 
--- Loans table
+
 CREATE TABLE Loans (
   loan_id INT PRIMARY KEY,
   account_id INT,
@@ -71,7 +70,7 @@ CREATE TABLE Loans (
   FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
--- Credit_Cards table
+
 CREATE TABLE Credit_Cards (
   card_id INT PRIMARY KEY,
   customer_id INT,
@@ -80,7 +79,7 @@ CREATE TABLE Credit_Cards (
   FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
 
--- Payments table
+
 CREATE TABLE Payments (
   payment_id INT PRIMARY KEY,
   card_id INT,
@@ -92,13 +91,6 @@ CREATE TABLE Payments (
 
 
 
-
-
-
-
-
-
--- Customers table
 INSERT INTO Customers (customer_id, first_name, last_name, address, contact_number)
 VALUES
   (1, 'John', 'Doe', '123 Main St', '555-1234'),
@@ -107,7 +99,7 @@ VALUES
   (4, 'Emily', 'Williams', '321 Pine St', '555-4321'),
   (5, 'David', 'Brown', '987 Maple Ave', '555-8765');
 
--- Accounts table
+
 INSERT INTO Accounts (account_id, customer_id, account_type, balance, status)
 VALUES
   (1, 1, 'Savings', 1000.00, 'Active'),
@@ -116,7 +108,6 @@ VALUES
   (4, 4, 'Checking', 750.00, 'Active'),
   (5, 5, 'Savings', 1500.00, 'Active');
 
--- Transactions table
 INSERT INTO Transactions (transaction_id, account_id, transaction_date, amount)
 VALUES
   (1, 1, '2023-05-01', 50.00),
@@ -125,7 +116,7 @@ VALUES
   (4, 4, '2023-05-04', -50.00),
   (5, 5, '2023-05-05', 100.00);
 
--- Audit_Log table
+
 INSERT INTO Audit_Log (log_id, auditor_id, audit_date, description)
 VALUES
   (1, 1, '2023-05-01', 'Performed account review.'),
@@ -134,7 +125,7 @@ VALUES
   (4, 3, '2023-05-04', 'Reviewed compliance procedures.'),
   (5, 2, '2023-05-05', 'Examined loan portfolio.');
 
--- Auditors table
+
 INSERT INTO Auditors (auditor_id, name, department)
 VALUES
   (1, 'John Doe', 'Risk Management'),
@@ -144,7 +135,7 @@ VALUES
   (5, 'David Brown', 'Internal Audit');
 
 
--- Branches table
+
 INSERT INTO Branches (branch_id, name, address, contact_number)
 VALUES
   (1, 'Main Branch', '123 Main St', '555-1111'),
@@ -153,7 +144,7 @@ VALUES
   (4, 'East Branch', '321 Pine St', '555-4444'),
   (5, 'West Branch', '987 Maple Ave', '555-5555');
 
--- Employees table
+
 INSERT INTO Employees (employee_id, first_name, last_name, address, contact_number, branch_id)
 VALUES
   (1, 'Sarah', 'Johnson', '456 Elm St', '555-6666', 1),
@@ -162,7 +153,7 @@ VALUES
   (4, 'Daniel', 'Wilson', '987 Maple Ave', '555-9999', 4),
   (5, 'Olivia', 'Brown', '123 Main St', '555-0000', 5);
 
--- Loans table
+
 INSERT INTO Loans (loan_id, account_id, loan_type, amount, interest_rate)
 VALUES
   (1, 1, 'Personal Loan', 5000.00, 8.5),
@@ -171,7 +162,7 @@ VALUES
   (4, 4, 'Business Loan', 100000.00, 7.25),
   (5, 5, 'Student Loan', 5000.00, 5.0);
 
--- Credit_Cards table
+
 INSERT INTO Credit_Cards (card_id, customer_id, card_type, credit_limit)
 VALUES
   (1, 1, 'Visa', 5000.00),
@@ -180,7 +171,7 @@ VALUES
   (4, 4, 'Discover', 2000.00),
   (5, 5, 'Visa', 4000.00);
 
--- Payments table
+
 INSERT INTO Payments (payment_id, card_id, payment_date, amount)
 VALUES
   (1, 1, '2023-05-01', 100.00),
