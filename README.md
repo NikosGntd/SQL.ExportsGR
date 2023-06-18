@@ -1,1 +1,1 @@
-This repository contains a demonstration of performing financial ratio analysis using SQL for a company called ExportsGR. The exercise focuses on calculating various financial ratios over a five-year period based on provided financial statements, including the balance sheet, cash flow statement, and income statement.
+This repository contains a demonstration of performing financial analysis using SQL for a company called ExportsGR
