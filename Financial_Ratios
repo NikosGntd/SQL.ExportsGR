@@ -1,4 +1,4 @@
-#Set of financial statements, including the balance sheet, cash flow statement, and income statement.
+--Creating tables
 
 CREATE TABLE BalanceSheet (
   ID INT PRIMARY KEY,
@@ -28,8 +28,6 @@ CREATE TABLE IncomeStatement (
   FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
 );
 
-
-#Populate the tables with some data for ExportsGR:
 
 INSERT INTO BalanceSheet (ID, CompanyID, Year, TotalAssets, TotalLiabilities, Equity)
 VALUES
