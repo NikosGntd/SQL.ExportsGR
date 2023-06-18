@@ -1,4 +1,4 @@
-/*In this exercise, we will search for intellectual property laws in Latin America issued between 1990 and 1999, 
+/*search for intellectual property laws in Latin America issued between 1990 and 1999, 
 excluding 1991-1993. We'll analyze the negotiation status, involvement of observers, and complaints related to these laws */
 
 WITH LatinAmericanLaws AS (
