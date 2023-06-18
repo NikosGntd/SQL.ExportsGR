@@ -1,4 +1,4 @@
--- Table: applicants
+
 CREATE TABLE applicants (
   applicant_id INT PRIMARY KEY,
   first_name VARCHAR(50),
@@ -9,7 +9,7 @@ CREATE TABLE applicants (
   address VARCHAR(100)
 );
 
--- Table: recruiters
+
 CREATE TABLE recruiters (
   recruiter_id INT PRIMARY KEY,
   first_name VARCHAR(50),
@@ -19,7 +19,7 @@ CREATE TABLE recruiters (
   department VARCHAR(50)
 );
 
--- Table: degrees
+
 CREATE TABLE degrees (
   degree_id INT PRIMARY KEY,
   applicant_id INT,
@@ -29,7 +29,7 @@ CREATE TABLE degrees (
   FOREIGN KEY (applicant_id) REFERENCES applicants(applicant_id)
 );
 
--- Table: experience
+
 CREATE TABLE experience (
   experience_id INT PRIMARY KEY,
   applicant_id INT,
@@ -40,7 +40,7 @@ CREATE TABLE experience (
   FOREIGN KEY (applicant_id) REFERENCES applicants(applicant_id)
 );
 
--- Table: digital_skills
+
 CREATE TABLE digital_skills (
   skill_id INT PRIMARY KEY,
   applicant_id INT,
@@ -50,7 +50,7 @@ CREATE TABLE digital_skills (
 );
 
 
--- Populating the applicants table
+
 INSERT INTO applicants (applicant_id, first_name, last_name, email, phone_number, date_of_birth, address)
 VALUES
   (1, 'John', 'Doe', 'john.doe@example.com', '123456789', '1990-01-01', '123 Main Street'),
@@ -62,46 +62,46 @@ VALUES
   (1, 'Alice', 'Johnson', 'alice.johnson@example.com', '555111222', 'HR'),
   (2, 'Bob', 'Anderson', 'bob.anderson@example.com', '555222333', 'IT');
 
--- Populating the degrees table
+
 INSERT INTO degrees (degree_id, applicant_id, degree_title, university, graduation_year)
 VALUES
   (1, 1, 'Bachelor of Science', 'University A', 2015),
   (2, 1, 'Master of Business Administration', 'University B', 2017),
   (3, 2, 'Bachelor of Arts', 'University C', 2014);
 
--- Populating the experience table
+
 INSERT INTO experience (experience_id, applicant_id, company_name, job_title, start_date, end_date)
 VALUES
   (1, 1, 'Company X', 'Software Developer', '2016-01-01', '2018-12-31'),
   (2, 1, 'Company Y', 'Project Manager', '2019-01-01', NULL),
   (3, 2, 'Company Z', 'Marketing Coordinator', '2015-03-01', '2018-08-31');
 
--- Populating the digital_skills table
+
 INSERT INTO digital_skills (skill_id, applicant_id, skill_name, proficiency_level)
 VALUES
   (1, 1, 'Programming', 5),
   (2, 1, 'Data Analysis', 4),
   (3, 2, 'Graphic Design', 3);
   
- --Retrieve all applicants with their degrees and digital skills:
+ --All applicants with their degrees and digital skills
 SELECT a.applicant_id, a.first_name, a.last_name, d.degree_title, ds.skill_name
 FROM applicants a
 LEFT JOIN degrees d ON a.applicant_id = d.applicant_id
 LEFT JOIN digital_skills ds ON a.applicant_id = ds.applicant_id;
 
---Retrieve recruiters and the number of applicants they are responsible for:
+--Recruiters and the number of applicants they are responsible for
 SELECT r.recruiter_id, r.first_name, r.last_name, COUNT(a.applicant_id) AS num_applicants
 FROM recruiters r
 LEFT JOIN applicants a ON r.recruiter_id = a.recruiter_id
 GROUP BY r.recruiter_id, r.first_name, r.last_name;
 
---Retrieve applicants who have a proficiency level of 4 or higher in a specific digital skill:
+--Applicants who have a proficiency level of 4 or higher in a specific digital skill
 SELECT a.applicant_id, a.first_name, a.last_name, ds.skill_name, ds.proficiency_level
 FROM applicants a
 JOIN digital_skills ds ON a.applicant_id = ds.applicant_id
 WHERE ds.skill_name = 'Programming' AND ds.proficiency_level >= 4;
 
---Retrieve applicants with their most recent work experience:
+--Applicants with their most recent work experience
 SELECT a.applicant_id, a.first_name, a.last_name, e.company_name, e.job_title, e.end_date
 FROM applicants a
 JOIN experience e ON a.applicant_id = e.applicant_id
@@ -111,26 +111,26 @@ WHERE e.end_date = (
   WHERE applicant_id = a.applicant_id
 );
 
---Retrieve applicants who have a degree from a specific university:
+--Applicants who have a degree from a specific university
 SELECT a.applicant_id, a.first_name, a.last_name, d.degree_title, d.university
 FROM applicants a
 JOIN degrees d ON a.applicant_id = d.applicant_id
 WHERE d.university = 'University A';
 
---Retrieve recruiters along with the count of applicants they have assigned for each department:
+--Recruiters along with the count of applicants they have assigned for each department:
 SELECT r.recruiter_id, r.first_name, r.last_name, r.department, COUNT(a.applicant_id) AS num_applicants
 FROM recruiters r
 LEFT JOIN applicants a ON r.recruiter_id = a.recruiter_id
 GROUP BY r.recruiter_id, r.first_name, r.last_name, r.department;
 
---Retrieve applicants who have both a specific degree and a proficiency level in a digital skill:
+--Applicants who have both a specific degree and a proficiency level in a digital skill:
 SELECT a.applicant_id, a.first_name, a.last_name, d.degree_title, ds.skill_name, ds.proficiency_level
 FROM applicants a
 JOIN degrees d ON a.applicant_id = d.applicant_id
 JOIN digital_skills ds ON a.applicant_id = ds.applicant_id
 WHERE d.degree_title = 'Bachelor of Science' AND ds.skill_name = 'Programming';
 
---Retrieve applicants with their total years of work experience:
+--Applicants with their total years of work experience:
 SELECT a.applicant_id, a.first_name, a.last_name, SUM(DATEDIFF(e.end_date, e.start_date)) AS total_experience
 FROM applicants a
 JOIN experience e ON a.applicant_id = e.applicant_id
