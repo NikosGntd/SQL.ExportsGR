@@ -1,4 +1,4 @@
---Suppliers table:
+
 CREATE TABLE Suppliers (
   SupplierID INT PRIMARY KEY,
   SupplierName VARCHAR(50),
@@ -11,7 +11,7 @@ CREATE TABLE Suppliers (
   Phone VARCHAR(20)
 );
 
---Products table:
+
 CREATE TABLE Products (
   ProductID INT PRIMARY KEY,
   ProductName VARCHAR(50),
@@ -22,7 +22,7 @@ CREATE TABLE Products (
   FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
---Orders table:
+
 CREATE TABLE Orders (
   OrderID INT PRIMARY KEY,
   OrderDate DATE,
@@ -30,7 +30,7 @@ CREATE TABLE Orders (
   FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
---OrderItems table:
+
 CREATE TABLE OrderItems (
   OrderItemID INT PRIMARY KEY,
   OrderID INT,
@@ -41,7 +41,7 @@ CREATE TABLE OrderItems (
   FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
---Customers table:
+
 CREATE TABLE Customers (
   CustomerID INT PRIMARY KEY,
   CustomerName VARCHAR(50),
@@ -54,7 +54,7 @@ CREATE TABLE Customers (
   Phone VARCHAR(20)
 );
 
---PurchaseOrders table:
+
 CREATE TABLE PurchaseOrders (
   PurchaseOrderID INT PRIMARY KEY,
   OrderID INT,
@@ -66,7 +66,7 @@ CREATE TABLE PurchaseOrders (
   FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
---PurchaseOrderItems table:
+
 CREATE TABLE PurchaseOrderItems (
   PurchaseOrderItemID INT PRIMARY KEY,
   PurchaseOrderID INT,
@@ -77,7 +77,7 @@ CREATE TABLE PurchaseOrderItems (
   FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
---Payment table:
+
 CREATE TABLE Payment (
   PaymentID INT PRIMARY KEY,
   PurchaseOrderID INT,
@@ -88,7 +88,7 @@ CREATE TABLE Payment (
 
 
 
---Suppliers table:
+
 INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Address, City, State, Country, PostalCode, Phone)
 VALUES (1, 'ABC Suppliers', 'John Doe', '123 Main Street', 'New York', 'NY', 'USA', '10001', '123-456-7890');
 
@@ -104,7 +104,6 @@ VALUES (4, 'Best Suppliers', 'Sarah Brown', '321 Pine Avenue', 'Miami', 'FL', 'U
 INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Address, City, State, Country, PostalCode, Phone)
 VALUES (5, 'Global Suppliers', 'Michael Lee', '555 Maple Lane', 'Houston', 'TX', 'USA', '77001', '111-222-3333');
 
---Products table:
 INSERT INTO Products (ProductID, ProductName, SupplierID, Category, UnitPrice, UnitsInStock)
 VALUES (1, 'Widget A', 1, 'Widgets', 10.99, 50);
 
@@ -120,7 +119,7 @@ VALUES (4, 'Gizmo X', 2, 'Gizmos', 14.99, 75);
 INSERT INTO Products (ProductID, ProductName, SupplierID, Category, UnitPrice, UnitsInStock)
 VALUES (5, 'Widget D', 3, 'Widgets', 12.99, 30
 
---Orders table:
+
 INSERT INTO Orders (OrderID, OrderDate, SupplierID)
 VALUES (1, '2023-06-01', 1);
 
@@ -135,7 +134,7 @@ VALUES (4, '2023-06-07', 2);
 
 INSERT INTO Orders (OrderID, OrderDate, SupplierID)
 VALUES (5, '2023-06-09', 1);
---OrderItems table:
+
 INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, UnitPrice)
 VALUES (1, 1, 1, 5, 10.99);
 
@@ -145,16 +144,13 @@ VALUES (2, 1, 2, 3, 19.99);
 INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, UnitPrice)
 VALUES (3, 2, 3, 2, 8.99);
 
-
-
-
 INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, UnitPrice)
 VALUES (4, 2, 1, 10, 10.99);
 
 INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, UnitPrice)
 VALUES (5, 3, 4, 7, 14.99);
 
---Customers table:
+
 INSERT INTO Customers (CustomerID, CustomerName, ContactName, Address, City, State, Country, PostalCode, Phone)
 VALUES (1, 'ABC Company', 'Mark Johnson', '789 Elm Street', 'Chicago', 'IL', 'USA', '60601', '555-123-4567');
 
@@ -170,7 +166,7 @@ VALUES (4, 'Global Corp', 'Rachel Miller', '123 Main Street', 'New York', 'NY', 
 INSERT INTO Customers (CustomerID, CustomerName, ContactName, Address, City, State, Country, PostalCode, Phone)
 VALUES (5, 'Tech Solutions', 'John Smith', '456 Oak Avenue', 'Los Angeles', 'CA', 'USA', '90001', '987-654-3210');
 
---PurchaseOrders table:
+
 INSERT INTO PurchaseOrders (PurchaseOrderID, OrderID, CustomerID, OrderDate, DeliveryDate, Status)
 VALUES (1, 1, 1, '2023-06-01', '2023-06-10', 'Pending');
 
@@ -186,7 +182,7 @@ VALUES (4, 4, 2, '2023-06-07', '2023-06-18', 'Pending');
 INSERT INTO PurchaseOrders (PurchaseOrderID, OrderID, CustomerID, OrderDate, DeliveryDate, Status)
 VALUES (5, 5, 1, '2023-06-09', '2023-06-20', 'Pending');
 
---PurchaseOrderItems table:
+
 INSERT INTO PurchaseOrderItems (PurchaseOrderItemID, PurchaseOrderID, ProductID, Quantity, UnitPrice)
 VALUES (1, 1, 1, 5, 10.99);
 
@@ -202,7 +198,7 @@ VALUES (4, 2, 1, 10, 10.99);
 INSERT INTO PurchaseOrderItems (PurchaseOrderItemID, PurchaseOrderID, ProductID, Quantity, UnitPrice)
 VALUES (5, 3, 4, 7, 14.99);
 
---Payment table:
+
 INSERT INTO Payment (PaymentID, PurchaseOrderID, Amount, PaymentDate)
 VALUES (1, 1, 54.95, '2023-06-15');
 
@@ -219,26 +215,26 @@ INSERT INTO Payment (PaymentID, PurchaseOrderID, Amount, PaymentDate)
 VALUES (5, 5, 90.93, '2023-06-25');
 
 
---Retrieve the total revenue generated from each purchase order:
+--Retrieve the total revenue generated from each purchase order
 SELECT po.PurchaseOrderID, SUM(poi.Quantity * poi.UnitPrice) AS TotalRevenue
 FROM PurchaseOrders po
 JOIN PurchaseOrderItems poi ON po.PurchaseOrderID = poi.PurchaseOrderID
 GROUP BY po.PurchaseOrderID;
 
---Retrieve the products that have been ordered but are currently out of stock:
+--Retrieve the products that have been ordered but are currently out of stock
 SELECT p.ProductID, p.ProductName
 FROM Products p
 JOIN OrderItems oi ON p.ProductID = oi.ProductID
 WHERE oi.Quantity > 0 AND p.UnitsInStock = 0;
 
---Retrieve the customers who have placed multiple purchase orders:
+--Retrieve the customers who have placed multiple purchase orders
 SELECT c.CustomerID, c.CustomerName, COUNT(po.PurchaseOrderID) AS TotalOrders
 FROM Customers c
 JOIN PurchaseOrders po ON c.CustomerID = po.CustomerID
 GROUP BY c.CustomerID, c.CustomerName
 HAVING COUNT(po.PurchaseOrderID) > 1;
 
---Retrieve the top 5 suppliers with the highest total revenue from orders:
+--Retrieve the top 5 suppliers with the highest total revenue from orders
 SELECT s.SupplierID, s.SupplierName, SUM(poi.Quantity * poi.UnitPrice) AS TotalRevenue
 FROM Suppliers s
 JOIN Products p ON s.SupplierID = p.SupplierID
@@ -247,7 +243,7 @@ GROUP BY s.SupplierID, s.SupplierName
 ORDER BY TotalRevenue DESC
 LIMIT 5;
 
---Retrieve the customers who have made payments for all their purchase orders:
+--Retrieve the customers who have made payments for all their purchase orders
 SELECT c.CustomerID, c.CustomerName
 FROM Customers c
 JOIN PurchaseOrders po ON c.CustomerID = po.CustomerID
@@ -255,39 +251,39 @@ LEFT JOIN Payment pm ON po.PurchaseOrderID = pm.PurchaseOrderID
 GROUP BY c.CustomerID, c.CustomerName
 HAVING COUNT(po.PurchaseOrderID) = COUNT(pm.PurchaseOrderID);
 
---Undamaged shipment rate:
+--Undamaged shipment rate
 SELECT COUNT(*) AS TotalShipments,
        COUNT(CASE WHEN IsDamaged = 0 THEN 1 END) AS UndamagedShipments,
        COUNT(CASE WHEN IsDamaged = 0 THEN 1 END) / COUNT(*) * 100 AS UndamagedShipmentRate
 FROM Shipments;
 
---Purchase order cycle time:
+--Purchase order cycle time
 SELECT AVG(DATEDIFF(Day, OrderDate, DeliveryDate)) AS AverageCycleTime
 FROM PurchaseOrders;
 
---Cost savings as a percentage of spend:
+--Cost savings as a percentage of spend
 SELECT SUM(SavingsAmount) / SUM(TotalSpend) * 100 AS CostSavingsPercentage
 FROM Purchases;
 
---Supplier lead time:
+--Supplier lead time
 SELECT SupplierID,
        AVG(DATEDIFF(Day, OrderDate, DeliveryDate)) AS AverageLeadTime
 FROM PurchaseOrders
 GROUP BY SupplierID;
 
---Purchase order accuracy rate:
+--Purchase order accuracy rate
 SELECT COUNT(*) AS TotalOrders,
        COUNT(CASE WHEN IsCorrect = 1 THEN 1 END) AS CorrectOrders,
        COUNT(CASE WHEN IsCorrect = 1 THEN 1 END) / COUNT(*) * 100 AS OrderAccuracyRate
 FROM Orders;
 
---Percentage of on-time deliveries:
+--Percentage of on-time deliveries
 SELECT COUNT(*) AS TotalDeliveries,
        COUNT(CASE WHEN DeliveryDate <= ExpectedDeliveryDate THEN 1 END) AS OnTimeDeliveries,
        COUNT(CASE WHEN DeliveryDate <= ExpectedDeliveryDate THEN 1 END) / COUNT(*) * 100 AS OnTimeDeliveryPercentage
 FROM Deliveries;
 
---Percentage of orders placed electronically:
+--Percentage of orders placed electronically
 SELECT COUNT(*) AS TotalOrders,
        COUNT(CASE WHEN IsElectronic = 1 THEN 1 END) AS ElectronicOrders,
        COUNT(CASE WHEN IsElectronic = 1 THEN 1 END) / COUNT(*) * 100 AS ElectronicOrderPercentage
